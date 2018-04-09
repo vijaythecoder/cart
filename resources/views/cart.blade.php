@@ -10,29 +10,35 @@
                 <div class="card-body">
                     
 
-                    <ul class="list-group">
-                        @foreach($cart as $item) 
-                            <li class="list-group-item">
-                                <a href="{{ url('cart-remove/' . $item->id) }}" class="btn btn-danger btn-sm">
-                                    X
-                                </a>
-                                {{ $item->name }} ({{ $item->price }} * {{ $item->quantity }})
+                    @if(count($cart) > 0) 
+                        <ul class="list-group">
+                            @foreach($cart as $item) 
+                                <li class="list-group-item">
+                                    <a href="{{ url('cart-remove/' . $item->id) }}" class="btn btn-danger btn-sm">
+                                        X
+                                    </a>
+                                    {{ $item->name }} ({{ $item->price }} * {{ $item->quantity }})
+                                    <span class="float-right">
+                                        ${{ $item->price * $item->quantity }}
+                                    </span>
+                                </li>
+                            @endforeach
+                            <li class="list-group-item bg-success text-white">
+                                Total 
                                 <span class="float-right">
-                                    ${{ $item->price * $item->quantity }}
+                                    ${{ $total }}
                                 </span>
                             </li>
-                        @endforeach
-                        <li class="list-group-item bg-success text-white">
-                            Total 
-                            <span class="float-right">
-                                ${{ $total }}
-                            </span>
-                        </li>
-                    </ul>
-                    <br>
-                    <div class="text-center">
-                        <a href="{{ url('confirm-order') }}" class="btn btn-primary">Confirm Order</a>        
+                        </ul>
+                        <br>
+                        <div class="text-center">
+                            <a href="{{ url('confirm-order') }}" class="btn btn-primary">Confirm Order</a>        
+                        </div>
+                    @else
+                    <div class="alert alert-success" role="alert">
+                      Your cart is empty, please goto <a href="{{ url('home') }}">Home</a> to order
                     </div>
+                    @endif
                 </div>
             </div>
         </div>

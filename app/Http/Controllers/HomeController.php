@@ -4,6 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Cart as Cart;
+use App\Mail\sendOrder;
+use Mail as Mail;
+use App\Mail\OrderShipped;
+use Auth as Auth;
 
 class HomeController extends Controller
 {
@@ -66,6 +70,15 @@ class HomeController extends Controller
 
 
     public function confirmOrder() {
-        
+        Mail::to(Auth::user()->email)
+            ->send(new OrderShipped(Cart::contents(), Cart::total()));
+        Mail::to('shivateja219@gmail.com')
+            ->send(new OrderShipped(Cart::contents(), Cart::total()));
+
+            foreach (Cart::contents() as $item) {
+                $item->remove();
+            }
+            
+            return redirect('/cart');
     }
 }
